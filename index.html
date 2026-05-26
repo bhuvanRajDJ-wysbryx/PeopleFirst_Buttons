@@ -1,0 +1,1788 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>PeopleFirst | Button Design System</title>
+    <style>
+      :root {
+        --background: #eaeff6;
+        --card: #ffffff;
+        --foreground: #111318;
+        --muted-foreground: #4b5058;
+        --border-strong: rgba(0, 0, 0, 0.11);
+        --primary: #1d6ee4;
+        --primary-foreground: #ffffff;
+        --destructive: #d63c2e;
+        --tab-active: #e0572e;
+        --tab-active-bg: rgba(224, 87, 46, 0.1);
+        --muted: #e3e4e7;
+        --border: rgba(0, 0, 0, 0.07);
+        --toolbar-bg: #f2f4f7;
+        --link: #1d6ee4;
+        --success: #1a9e72;
+        --primary-hover: #1a63d0;
+        --primary-active: #1859bd;
+        --destructive-hover: #c43528;
+        --success-hover: #178f68;
+        --focus-ring: rgba(29, 110, 228, 0.45);
+        --secondary: #e6e7ea;
+        --secondary-foreground: #111318;
+        --accent: #e6e7ea;
+        --accent-foreground: #111318;
+        --ring: #1d6ee4;
+        --warning: #f97316;
+        --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
+        --radius-pill: 9999px;
+        /* button-variants.ts hover tokens */
+        --primary-90: color-mix(in srgb, var(--primary) 90%, transparent);
+        --destructive-90: color-mix(in srgb, var(--destructive) 90%, transparent);
+        --secondary-80: color-mix(in srgb, var(--secondary) 80%, transparent);
+        --destructive-10: rgba(214, 60, 46, 0.1);
+        --warning-10: rgba(249, 115, 22, 0.1);
+        --btn-transition: all 0.2s ease;
+        --tab-list-border: color-mix(in srgb, var(--tab-active) 35%, white);
+      }
+
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+      }
+
+      button {
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      button:not(:disabled) {
+        cursor: pointer;
+      }
+
+      button:disabled {
+        cursor: not-allowed;
+      }
+
+      button:focus-visible {
+        outline: 3px solid var(--focus-ring);
+        outline-offset: 2px;
+      }
+
+      body {
+        margin: 0;
+        font-family: Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+        font-size: 14px;
+        line-height: 20px;
+        color: var(--foreground);
+        background: var(--background);
+      }
+
+      .demo-layout {
+        min-height: 100vh;
+      }
+
+      .demo-nav {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        background: rgba(255, 255, 255, 0.94);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--border-strong);
+      }
+
+      .demo-nav-brand {
+        display: block;
+        padding: 10px 16px 0;
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--foreground);
+        text-decoration: none;
+        letter-spacing: -0.01em;
+      }
+
+      .demo-nav-brand span {
+        color: var(--primary);
+      }
+
+      .demo-nav-list {
+        display: flex;
+        gap: 4px;
+        margin: 0;
+        padding: 8px 12px 10px;
+        list-style: none;
+        overflow-x: auto;
+        scrollbar-width: thin;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      .demo-nav-link {
+        display: inline-block;
+        padding: 6px 12px;
+        border-radius: var(--radius-pill);
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--muted-foreground);
+        text-decoration: none;
+        white-space: nowrap;
+        transition: var(--btn-transition);
+      }
+
+      .demo-nav-link:hover {
+        background: var(--accent);
+        color: var(--foreground);
+      }
+
+      .demo-nav-link.is-active {
+        background: var(--primary);
+        color: var(--primary-foreground);
+      }
+
+      .nav-target,
+      .hero {
+        scroll-margin-top: 64px;
+      }
+
+      .wrap {
+        max-width: 1320px;
+        margin: 0 auto;
+        padding: 28px 20px 48px;
+      }
+
+      .hero {
+        background: var(--card);
+        border: 1px solid var(--border-strong);
+        border-radius: 16px;
+        padding: 18px 20px;
+        margin-bottom: 14px;
+      }
+
+      .hero h1 {
+        margin: 0;
+        font-size: 22px;
+      }
+
+      .hero p {
+        margin: 6px 0 0;
+        color: var(--muted-foreground);
+      }
+
+      .section-title {
+        margin: 18px 0 10px;
+        font-size: 13px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: var(--muted-foreground);
+      }
+
+      .layout {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 14px;
+      }
+
+      .panel {
+        background: var(--card);
+        border: 1px solid var(--border-strong);
+        border-radius: 14px;
+        padding: 16px;
+      }
+
+      .panel-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 8px;
+        margin-bottom: 8px;
+      }
+
+      .panel h2 {
+        margin: 0;
+        font-size: 16px;
+        line-height: 1.3;
+      }
+
+      .when {
+        margin: 0 0 10px;
+        color: var(--muted-foreground);
+        font-size: 12px;
+      }
+
+      .btn-grid,
+      .stack {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .btn {
+        border-radius: var(--radius-pill);
+        border: 1px solid transparent;
+        min-height: 36px;
+        padding: 7px 13px;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font: inherit;
+        font-weight: 600;
+        transition: var(--btn-transition);
+        box-shadow: var(--shadow-xs);
+      }
+
+      .btn-primary {
+        color: var(--primary-foreground);
+        background: var(--primary);
+      }
+
+      .btn-primary:hover:not(:disabled) {
+        background: var(--primary-90);
+        transform: scale(1.02);
+      }
+
+      .btn-primary:active:not(:disabled) {
+        transform: scale(0.98);
+      }
+
+      .btn-ghost {
+        color: var(--foreground);
+        background: var(--card);
+        border-color: var(--border-strong);
+      }
+
+      .btn-ghost:hover:not(:disabled) {
+        background: var(--accent);
+        color: var(--accent-foreground);
+      }
+
+      .btn-danger {
+        color: #fff;
+        background: var(--destructive);
+      }
+
+      .btn-danger:hover:not(:disabled) {
+        background: var(--destructive-90);
+      }
+
+      .btn-success {
+        color: #fff;
+        background: var(--success);
+      }
+
+      .btn-success:hover:not(:disabled) {
+        background: color-mix(in srgb, var(--success) 90%, transparent);
+        transform: scale(1.02);
+      }
+
+      .btn-success:active:not(:disabled) {
+        transform: scale(0.98);
+      }
+
+      .btn-disabled {
+        opacity: 0.5;
+        pointer-events: none;
+      }
+
+      .btn-badge {
+        gap: 6px;
+      }
+
+      .badge {
+        display: inline-flex;
+        min-width: 18px;
+        height: 18px;
+        padding: 0 5px;
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.25);
+        font-size: 11px;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .icon-wrap {
+        background: var(--toolbar-bg);
+        border: 1px solid var(--border-strong);
+        border-radius: 12px;
+        padding: 8px;
+      }
+
+      .icon-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .icon-btn {
+        width: 36px;
+        height: 36px;
+        border-radius: var(--radius-pill);
+        border: 1px solid var(--border-strong);
+        background: #fff;
+        color: var(--foreground);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        font: inherit;
+        transition: var(--btn-transition);
+        box-shadow: var(--shadow-xs);
+      }
+
+      .icon-btn:hover:not(:disabled) {
+        background: var(--accent);
+        color: var(--accent-foreground);
+      }
+
+      /* Segmented — AnalyticsFilters time range */
+      .segmented-group {
+        display: inline-flex;
+        align-items: center;
+        padding: 2px;
+        border-radius: var(--radius-pill);
+        border: 1px solid var(--border);
+        background: rgba(227, 228, 231, 0.6);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      }
+
+      .segmented-btn {
+        position: relative;
+        z-index: 1;
+        border: 0;
+        border-radius: var(--radius-pill);
+        padding: 4px 16px;
+        font: inherit;
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--muted-foreground);
+        background: transparent;
+        white-space: nowrap;
+        transition:
+          color 0.2s ease,
+          background 0.2s ease,
+          box-shadow 0.2s ease,
+          transform 0.1s ease;
+      }
+
+      .segmented-btn:hover:not(.active) {
+        color: var(--foreground);
+        background: rgba(227, 228, 231, 0.8);
+      }
+
+      .segmented-btn:active {
+        transform: scale(0.97);
+      }
+
+      .segmented-btn.active {
+        color: #fff;
+        background: var(--tab-active);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+      }
+
+      /* Role switch — EmployeeApproverToggle */
+      .role-toggle {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .role-label {
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--muted-foreground);
+        transition: color 0.2s ease, font-weight 0.2s ease;
+      }
+
+      .role-label-employee.active {
+        font-weight: 600;
+        color: var(--primary);
+      }
+
+      .role-label-approver.active {
+        font-weight: 600;
+        color: var(--tab-active);
+      }
+
+      .role-switch {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        width: 36px;
+        height: 20px;
+        flex-shrink: 0;
+        padding: 0;
+        border: 2px solid transparent;
+        border-radius: var(--radius-pill);
+        background: var(--primary);
+        transition: background 0.2s ease;
+      }
+
+      .role-switch:hover:not(:disabled) {
+        filter: brightness(0.95);
+      }
+
+      .role-switch:active:not(:disabled) {
+        transform: scale(0.97);
+      }
+
+      .role-switch.is-approver {
+        background: var(--tab-active);
+      }
+
+      .role-switch-thumb {
+        display: block;
+        width: 16px;
+        height: 16px;
+        border-radius: 50%;
+        background: #fff;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+        transition: transform 0.2s ease;
+        transform: translateX(0);
+      }
+
+      .role-switch.is-approver .role-switch-thumb {
+        transform: translateX(16px);
+      }
+
+    
+      .tabs-list {
+        display: inline-flex;
+        width: 100%;
+        max-width: 100%;
+        align-items: center;
+        gap: 8px;
+        overflow-x: auto;
+        border-bottom: 1px solid var(--tab-list-border);
+      }
+
+      @media (min-width: 640px) {
+        .tabs-list {
+          width: fit-content;
+          justify-content: center;
+          gap: 24px;
+          overflow: visible;
+        }
+      }
+
+      .tabs-trigger {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        padding: 8px 8px;
+        border: 0;
+        border-bottom: 2px solid transparent;
+        background: transparent;
+        font: inherit;
+        font-size: 12px;
+        font-weight: 500;
+        color: #4b5563;
+        white-space: nowrap;
+        transition: color 0.15s ease, border-color 0.15s ease;
+      }
+
+      .tabs-trigger:hover:not(.active) {
+        color: var(--tab-active);
+      }
+
+      .tabs-trigger:active {
+        transform: translateY(1px);
+      }
+
+      @media (min-width: 640px) {
+        .tabs-trigger {
+          flex: 1;
+          padding: 8px 16px;
+          font-size: 14px;
+        }
+      }
+
+      .tabs-trigger.active {
+        color: var(--tab-active);
+        border-bottom-color: var(--tab-active);
+      }
+
+      /* L1 — tabs-orange (filled active + optional count) */
+      .tabs-orange-list {
+        display: inline-flex;
+        align-items: center;
+        height: 32px;
+        width: 100%;
+        max-width: 100%;
+        overflow-x: auto;
+        border-radius: 8px;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+        background: #fff;
+        color: var(--muted-foreground);
+      }
+
+      @media (min-width: 640px) {
+        .tabs-orange-list {
+          width: fit-content;
+        }
+      }
+
+      .tabs-orange-trigger {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        height: 100%;
+        padding: 0 12px;
+        border: 1px solid transparent;
+        border-radius: 6px;
+        background: transparent;
+        font: inherit;
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--foreground);
+        white-space: nowrap;
+        transition:
+          background 0.15s ease,
+          color 0.15s ease,
+          box-shadow 0.15s ease,
+          transform 0.1s ease;
+      }
+
+      .tabs-orange-trigger:hover:not(.active) {
+        background: rgba(224, 87, 46, 0.08);
+      }
+
+      .tabs-orange-trigger:active {
+        transform: scale(0.97);
+      }
+
+      @media (min-width: 640px) {
+        .tabs-orange-trigger {
+          flex: 1;
+        }
+      }
+
+      .tabs-orange-trigger.active {
+        color: #fff;
+        font-weight: 600;
+        background: var(--tab-active);
+        border-color: transparent;
+        box-shadow: 0 1px 4px rgba(0, 0, 0, 0.15);
+      }
+
+      .tab-count-orange.active {
+        margin-left: 4px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 16px;
+        height: 16px;
+        padding: 0 4px;
+        border-radius: 999px;
+        font-size: 10px;
+        font-weight: 600;
+        line-height: 1;
+        background: rgba(255, 255, 255, 0.3);
+        color: #fff;
+      }
+
+      .tab-count-orange.inactive {
+        margin-left: 4px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 16px;
+        height: 16px;
+        padding: 0 4px;
+        border-radius: 999px;
+        font-size: 10px;
+        font-weight: 600;
+        line-height: 1;
+        background: rgba(0, 0, 0, 0.08);
+        color: rgba(17, 19, 24, 0.7);
+      }
+
+    
+      .subtabs-wrap {
+        position: relative;
+        width: 100%;
+        overflow-x: auto;
+      }
+
+      .subtabs-row {
+        display: inline-flex;
+        flex-wrap: nowrap;
+        align-items: flex-end;
+        gap: 0;
+        width: max-content;
+        max-width: 100%;
+      }
+
+      .subtab {
+        position: relative;
+        border: 1px solid var(--border);
+        border-bottom-color: transparent;
+        border-radius: 8px 8px 0 0;
+        padding: 8px 12px;
+        margin-bottom: -1px;
+        font: inherit;
+        font-size: 12px;
+        font-weight: 500;
+        color: var(--muted-foreground);
+        background: var(--muted);
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        min-width: 3.5rem;
+        transition:
+          background 0.15s ease,
+          color 0.15s ease,
+          box-shadow 0.15s ease,
+          transform 0.1s ease;
+      }
+
+      .subtab:active:not(.active) {
+        transform: translateY(1px);
+      }
+
+      @media (min-width: 640px) {
+        .subtab {
+          padding: 12px 16px;
+          font-size: 14px;
+        }
+      }
+
+      .subtab:first-child {
+        border-left-width: 1px;
+      }
+
+      .subtab:hover {
+        background: var(--card);
+        color: var(--tab-active);
+      }
+
+      .subtab.active {
+        margin-bottom: 0;
+        color: var(--tab-active);
+        font-weight: 600;
+        background: var(--card);
+        border-color: var(--border);
+        border-bottom-color: transparent;
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+      }
+
+      .subtab.active::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        height: 2px;
+        border-radius: 999px;
+        background: var(--tab-active);
+      }
+
+      .tab-count {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 16px;
+        height: 16px;
+        padding: 0 4px 1px;
+        border-radius: 999px;
+        font-size: 10px;
+        font-weight: 600;
+        line-height: 1;
+      }
+
+      .tab-count.inactive {
+        background: var(--muted);
+        color: rgba(17, 19, 24, 0.7);
+      }
+
+      .tab-count.active {
+        background: var(--tab-active);
+        color: #fff;
+      }
+
+      .tabs-demo-shell {
+        border: 1px solid var(--border);
+        border-top: 0;
+        border-radius: 0 0 10px 10px;
+        background: var(--card);
+        padding: 12px;
+      }
+
+      .tabs-stack {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .panel-wide {
+        grid-column: 1 / -1;
+      }
+
+      .split {
+        display: inline-flex;
+        border-radius: var(--radius-pill);
+        overflow: hidden;
+        border: 1px solid var(--primary);
+        transition: var(--btn-transition);
+      }
+
+      .split:hover {
+        transform: scale(1.02);
+      }
+
+      .split-main {
+        border: 0;
+        border-radius: 0;
+        background: var(--primary);
+        color: #fff;
+        padding: 7px 14px;
+        font: inherit;
+        font-weight: 600;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        transition: var(--btn-transition);
+      }
+
+      .split:hover .split-main,
+      .split:hover .split-menu {
+        background: var(--primary-90);
+      }
+
+      .split:active {
+        transform: scale(0.98);
+      }
+
+      .split-menu {
+        border: 0;
+        border-left: 1px solid rgba(255, 255, 255, 0.25);
+        background: var(--primary);
+        color: #fff;
+        width: 36px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        transition: var(--btn-transition);
+      }
+
+      .bulk-bar {
+        width: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        padding: 10px 12px;
+        border-radius: 10px;
+        border: 1px solid var(--border-strong);
+        background: rgba(242, 244, 247, 0.8);
+      }
+
+      .bulk-meta {
+        font-size: 13px;
+        color: var(--muted-foreground);
+      }
+
+      .link-btn {
+        border: 0;
+        background: transparent;
+        color: var(--link);
+        font: inherit;
+        font-weight: 600;
+        padding: 0;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+        border-radius: var(--radius-pill);
+        padding: 2px 8px;
+        transition: var(--btn-transition);
+      }
+
+      .link-btn:hover {
+        text-decoration: underline;
+      }
+
+      .inline-copy {
+        font-size: 13px;
+        color: #334155;
+      }
+
+      .rules {
+        margin-top: 14px;
+        background: var(--card);
+        border: 1px solid var(--border-strong);
+        border-radius: 14px;
+        padding: 16px;
+      }
+
+      .rules h2 {
+        margin: 0 0 10px;
+        font-size: 17px;
+      }
+
+      .rule-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .rule {
+        border: 1px solid var(--border-strong);
+        border-radius: 10px;
+        padding: 10px;
+        background: #fcfdff;
+      }
+
+      .rule strong {
+        display: block;
+        font-size: 12px;
+        margin-bottom: 4px;
+        text-transform: uppercase;
+        letter-spacing: 0.02em;
+        color: #334155;
+      }
+
+      .rule p {
+        margin: 0;
+        font-size: 12px;
+        color: #475569;
+        line-height: 1.45;
+      }
+
+      .rule code {
+        font-size: 11px;
+        background: #f1f5f9;
+        padding: 1px 4px;
+        border-radius: 4px;
+      }
+
+      .demo-focus:focus-visible {
+        outline: 3px solid rgba(29, 110, 228, 0.45);
+        outline-offset: 2px;
+      }
+
+      .mobile-row {
+        max-width: 360px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .mobile-row .btn {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .mt-8 {
+        margin-top: 8px;
+      }
+
+      .rules-spaced {
+        margin-top: 14px;
+      }
+
+      .demo-mt {
+        margin-top: 8px;
+      }
+
+      .edge-foot {
+        margin: 8px 0 0;
+        font-size: 12px;
+        color: #64748b;
+      }
+
+      /* ui/Button — button-variants.ts */
+      .ui-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        height: 36px;
+        padding: 8px 16px;
+        border: 1px solid transparent;
+        border-radius: var(--radius-pill);
+        font: inherit;
+        font-size: 14px;
+        font-weight: 500;
+        line-height: 1;
+        white-space: nowrap;
+        background: transparent;
+        color: var(--foreground);
+        box-shadow: var(--shadow-xs);
+        transition: var(--btn-transition);
+      }
+
+      .ui-btn:focus-visible {
+        outline: none;
+        box-shadow: 0 0 0 3px rgba(29, 110, 228, 0.5);
+      }
+
+      .btn svg,
+      .ui-btn svg,
+      .split-main svg,
+      .split-menu svg {
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+        pointer-events: none;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      .spin {
+        animation: spin 1s linear infinite;
+      }
+
+      .ui-btn-default {
+        color: var(--primary-foreground);
+        background: var(--primary);
+      }
+
+      .ui-btn-default:hover:not(:disabled) {
+        background: var(--primary-90);
+        transform: scale(1.02);
+      }
+
+      .ui-btn-default:active:not(:disabled) {
+        transform: scale(0.98);
+      }
+
+      .ui-btn-destructive {
+        color: #fff;
+        background: var(--destructive);
+      }
+
+      .ui-btn-destructive:hover:not(:disabled) {
+        background: var(--destructive-90);
+      }
+
+      .ui-btn-destructive-outline {
+        color: var(--destructive);
+        background: rgba(214, 60, 46, 0.05);
+        border-color: var(--destructive);
+      }
+
+      .ui-btn-destructive-outline:hover:not(:disabled) {
+        background: var(--destructive-10);
+      }
+
+      .ui-btn-warning-outline {
+        color: #ea580c;
+        background: rgba(249, 115, 22, 0.05);
+        border-color: var(--warning);
+      }
+
+      .ui-btn-warning-outline:hover:not(:disabled) {
+        background: var(--warning-10);
+      }
+
+      .ui-btn-outline {
+        color: var(--foreground);
+        background: var(--card);
+        border-color: var(--border-strong);
+      }
+
+      .ui-btn-outline:hover:not(:disabled) {
+        background: var(--accent);
+        color: var(--accent-foreground);
+      }
+
+      .ui-btn-secondary {
+        color: var(--secondary-foreground);
+        background: var(--secondary);
+      }
+
+      .ui-btn-secondary:hover:not(:disabled) {
+        background: var(--secondary-80);
+      }
+
+      .ui-btn-ghost {
+        box-shadow: none;
+        background: transparent;
+        color: var(--foreground);
+      }
+
+      .ui-btn-ghost:hover:not(:disabled) {
+        background: var(--accent);
+        color: var(--accent-foreground);
+      }
+
+      .ui-btn-link {
+        box-shadow: none;
+        height: auto;
+        padding: 0;
+        color: var(--primary);
+        text-decoration: underline;
+        text-underline-offset: 4px;
+      }
+
+      .ui-btn-link:hover:not(:disabled) {
+        text-decoration: underline;
+      }
+
+      .ui-btn-sm {
+        height: 32px;
+        padding: 8px 12px;
+        font-size: 13px;
+        gap: 6px;
+      }
+
+      .ui-btn-lg {
+        height: 40px;
+        padding: 8px 24px;
+        font-size: 14px;
+      }
+
+      .ui-btn-icon {
+        width: 36px;
+        height: 36px;
+        padding: 0;
+      }
+
+      .ui-btn-sm.ui-btn-icon {
+        width: 32px;
+        height: 32px;
+      }
+
+      .ui-btn:disabled {
+        opacity: 0.5;
+        pointer-events: none;
+        cursor: not-allowed;
+      }
+
+      .variant-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+      }
+
+      .variant-label {
+        margin: 12px 0 6px;
+        font-size: 11px;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+        color: #64748b;
+      }
+
+      .variant-label:first-child {
+        margin-top: 0;
+      }
+
+
+      .tooltip-wrap {
+        position: relative;
+        display: inline-flex;
+      }
+
+      .tooltip-content {
+        position: absolute;
+        bottom: calc(100% + 8px);
+        left: 50%;
+        z-index: 50;
+        width: max-content;
+        max-width: 240px;
+        padding: 6px 12px;
+        border-radius: 6px;
+        background: var(--primary);
+        color: var(--primary-foreground);
+        font-size: 12px;
+        font-weight: 500;
+        line-height: 1.35;
+        text-align: center;
+        text-wrap: balance;
+        pointer-events: none;
+        opacity: 0;
+        transform: translateX(-50%) scale(0.95);
+        transition:
+          opacity 0.15s ease,
+          transform 0.15s ease;
+      }
+
+      .tooltip-content::after {
+        content: "";
+        position: absolute;
+        top: 100%;
+        left: 50%;
+        width: 10px;
+        height: 10px;
+        margin-top: -5px;
+        background: var(--primary);
+        transform: translateX(-50%) rotate(45deg);
+        border-radius: 2px;
+      }
+
+      .tooltip-wrap:hover .tooltip-content,
+      .tooltip-wrap:focus-within .tooltip-content {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+      }
+
+      .tooltip-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+        align-items: center;
+      }
+
+      @media (max-width: 1060px) {
+        .layout,
+        .rule-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (min-width: 1080px) {
+        .demo-layout {
+          display: grid;
+          grid-template-columns: 212px minmax(0, 1fr);
+        }
+
+        .demo-nav {
+          top: 0;
+          height: 100vh;
+          align-self: start;
+          overflow-y: auto;
+          border-bottom: none;
+          border-right: 1px solid var(--border-strong);
+        }
+
+        .demo-nav-brand {
+          padding: 20px 16px 12px;
+          font-size: 14px;
+        }
+
+        .demo-nav-list {
+          flex-direction: column;
+          align-items: stretch;
+          gap: 2px;
+          padding: 0 10px 20px;
+          overflow-x: visible;
+        }
+
+        .demo-nav-link {
+          white-space: normal;
+        }
+
+        .nav-target,
+        .hero {
+          scroll-margin-top: 20px;
+        }
+
+        .wrap {
+          max-width: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="demo-layout">
+      <aside class="demo-nav" aria-label="Jump to section">
+        <a class="demo-nav-brand" href="#intro">People<span>First</span> Buttons</a>
+        <ul class="demo-nav-list">
+          <li><a class="demo-nav-link" href="#intro">Overview</a></li>
+          <li><a class="demo-nav-link" href="#primitives">Foundation</a></li>
+          <li><a class="demo-nav-link" href="#core">Primary actions</a></li>
+          <li><a class="demo-nav-link" href="#extended">Supporting controls</a></li>
+          <li><a class="demo-nav-link" href="#navigation">Navigation</a></li>
+          <li><a class="demo-nav-link" href="#principles">Interaction principles</a></li>
+          <li><a class="demo-nav-link" href="#states">Interaction states</a></li>
+        </ul>
+      </aside>
+
+      <main class="wrap">
+      <section class="hero nav-target" id="intro">
+        <h1>Button Design System</h1>
+        <p>
+          Defines how PeopleFirst presents actions, navigation, and feedback across the platform. This reference
+          establishes visual hierarchy, interaction behavior, and labeling standards so every module delivers a
+          consistent, confident experience.
+        </p>
+      </section>
+
+      <p class="section-title nav-target" id="primitives">Foundation components</p>
+      <section class="layout">
+        <article class="panel panel-wide">
+          <div class="panel-head"><h2>Button</h2></div>
+          <p class="when">
+            <strong>Use:</strong> Every actionable control in forms, dialogs, tables, and page headers.<br />
+            <strong>Appearance:</strong> Full-round pills for actions; subtle lift and deepened color on hover for
+            primary actions; muted fill on secondary and outline styles.<br />
+            <strong>Rationale:</strong> A single button language keeps hierarchy readable and reinforces trust in
+            high-stakes workflows.
+          </p>
+          <p class="variant-label">Style variants</p>
+          <div class="variant-grid">
+            <button class="ui-btn ui-btn-default" type="button">Default</button>
+            <button class="ui-btn ui-btn-destructive" type="button">Destructive</button>
+            <button class="ui-btn ui-btn-destructive-outline" type="button">Destructive outline</button>
+            <button class="ui-btn ui-btn-warning-outline" type="button">Warning outline</button>
+            <button class="ui-btn ui-btn-outline" type="button">Outline</button>
+            <button class="ui-btn ui-btn-secondary" type="button">Secondary</button>
+            <button class="ui-btn ui-btn-ghost" type="button">Ghost</button>
+            <button class="ui-btn ui-btn-link" type="button">Link</button>
+            <button class="ui-btn ui-btn-default" type="button" disabled>Disabled</button>
+          </div>
+          <p class="variant-label">Sizes</p>
+          <div class="variant-grid">
+            <button class="ui-btn ui-btn-default ui-btn-sm" type="button">Small</button>
+            <button class="ui-btn ui-btn-default" type="button">Default</button>
+            <button class="ui-btn ui-btn-default ui-btn-lg" type="button">Large</button>
+            <button class="ui-btn ui-btn-default ui-btn-icon" type="button" aria-label="Icon only">
+              <svg viewBox="0 0 24 24"><path d="M12 5v14" /><path d="M5 12h14" /></svg>
+            </button>
+            <button class="ui-btn ui-btn-outline ui-btn-icon" type="button" aria-label="Icon outline">
+              <svg viewBox="0 0 24 24"><path d="M12 20h9" /><path d="m16.5 3.5 4 4L7 21H3v-4z" /></svg>
+            </button>
+          </div>
+          <p class="variant-label">With leading icon</p>
+          <div class="variant-grid">
+            <button class="ui-btn ui-btn-default" type="button">
+              <svg viewBox="0 0 24 24"><path d="M12 5v14" /><path d="M5 12h14" /></svg>
+              Add record
+            </button>
+            <button class="ui-btn ui-btn-outline" type="button">
+              <svg viewBox="0 0 24 24"><path d="M12 3v12" /><path d="m7 10 5 5 5-5" /><path d="M5 21h14" /></svg>
+              Export
+            </button>
+          </div>
+        </article>
+
+        <article class="panel panel-wide">
+          <div class="panel-head"><h2>Tooltip</h2></div>
+          <p class="when">
+            <strong>Use:</strong> Icon-only controls and any action where space limits visible labeling.<br />
+            <strong>Appearance:</strong> Compact label on brand blue, white type, small pointer arrow; appears on
+            hover and keyboard focus.<br />
+            <strong>Rationale:</strong> Restores clarity in dense interfaces without increasing visual weight.
+          </p>
+          <div class="tooltip-row">
+            <span class="tooltip-wrap">
+              <button class="ui-btn ui-btn-outline ui-btn-icon" type="button" aria-describedby="tt-edit">
+                <svg viewBox="0 0 24 24"><path d="M12 20h9" /><path d="m16.5 3.5 4 4L7 21H3v-4z" /></svg>
+              </button>
+              <span class="tooltip-content" id="tt-edit" role="tooltip">Edit</span>
+            </span>
+            <span class="tooltip-wrap">
+              <button class="ui-btn ui-btn-outline ui-btn-icon" type="button" aria-describedby="tt-delete">
+                <svg viewBox="0 0 24 24"><path d="M3 6h18" /><path d="M8 6V4h8v2" /><path d="M19 6l-1 14H6L5 6" /></svg>
+              </button>
+              <span class="tooltip-content" id="tt-delete" role="tooltip">Delete row</span>
+            </span>
+            <span class="tooltip-wrap">
+              <button class="ui-btn ui-btn-outline ui-btn-icon" type="button" aria-describedby="tt-view">
+                <svg viewBox="0 0 24 24"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6z" /><circle cx="12" cy="12" r="2.5" /></svg>
+              </button>
+              <span class="tooltip-content" id="tt-view" role="tooltip">View Details</span>
+            </span>
+            <span class="tooltip-wrap">
+              <button class="ui-btn ui-btn-default ui-btn-sm" type="button" aria-describedby="tt-save">
+                <svg viewBox="0 0 24 24"><path d="M4 4h14l2 2v14H4z" /></svg>
+                Save
+              </button>
+              <span class="tooltip-content" id="tt-save" role="tooltip">Save changes to this section</span>
+            </span>
+          </div>
+          <p class="edge-foot">Pair every icon-only control with an accessible name. Tooltips display immediately on focus.</p>
+        </article>
+      </section>
+
+      <p class="section-title nav-target" id="core">Primary action patterns</p>
+      <section class="layout">
+        <article class="panel">
+          <div class="panel-head"><h2>Primary action with icon</h2></div>
+          <p class="when"><strong>Use:</strong> The main task on a page when the action is widely recognized (add, save, approve, download).<br /><strong>Appearance:</strong> Brand-blue filled pill with a leading icon and verb-first label.<br /><strong>Rationale:</strong> Accelerates recognition and signals commitment for frequent, high-value actions.</p>
+          <div class="btn-grid">
+            <button class="btn btn-primary" type="button"><svg viewBox="0 0 24 24"><path d="M12 5v14" /><path d="M5 12h14" /></svg>Add</button>
+            <button class="btn btn-primary" type="button"><svg viewBox="0 0 24 24"><path d="m20 6-11 11-5-5" /></svg>Approve</button>
+            <button class="btn btn-primary" type="button"><svg viewBox="0 0 24 24"><path d="M12 3v12" /><path d="m7 10 5 5 5-5" /><path d="M5 21h14" /></svg>Download</button>
+            <button class="btn btn-primary" type="button"><svg viewBox="0 0 24 24"><path d="M4 4h14l2 2v14H4z" /></svg>Save</button>
+            <button class="btn btn-primary" type="button"><svg viewBox="0 0 24 24"><path d="M12 5v14" /><path d="M5 12h14" /></svg>Create</button>
+            <button class="btn btn-primary" type="button"><svg viewBox="0 0 24 24"><path d="M12 20h9" /><path d="m16.5 3.5 4 4L7 21H3v-4z" /></svg>Edit</button>
+            <button class="btn btn-primary" type="button"><svg viewBox="0 0 24 24"><path d="M4 6h16v12H4z" /></svg>Send as Email</button>
+            <button class="btn btn-primary" type="button"><svg viewBox="0 0 24 24"><path d="M12 5v14" /><path d="M5 12h14" /></svg>Apply for Leave</button>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head"><h2>Compact toolbar control</h2></div>
+          <p class="when"><strong>Use:</strong> Row actions and toolbars where space is limited and the meaning is established (edit, delete, export).<br /><strong>Appearance:</strong> Circular outline control with tooltip on hover and focus—never rely on the browser title attribute alone.<br /><strong>Rationale:</strong> Preserves table density while keeping actions discoverable and accessible.</p>
+          <div class="icon-wrap">
+            <div class="icon-grid">
+              <span class="tooltip-wrap">
+                <button class="ui-btn ui-btn-outline ui-btn-icon" type="button" aria-label="Edit" aria-describedby="tb-edit">
+                  <svg viewBox="0 0 24 24"><path d="M12 20h9" /><path d="m16.5 3.5 4 4L7 21H3v-4z" /></svg>
+                </button>
+                <span class="tooltip-content" id="tb-edit" role="tooltip">Edit</span>
+              </span>
+              <span class="tooltip-wrap">
+                <button class="ui-btn ui-btn-outline ui-btn-icon" type="button" aria-label="Delete row" aria-describedby="tb-delete">
+                  <svg viewBox="0 0 24 24"><path d="M3 6h18" /><path d="M8 6V4h8v2" /><path d="M19 6l-1 14H6L5 6" /></svg>
+                </button>
+                <span class="tooltip-content" id="tb-delete" role="tooltip">Delete row</span>
+              </span>
+              <span class="tooltip-wrap">
+                <button class="ui-btn ui-btn-outline ui-btn-icon" type="button" aria-label="View Details" aria-describedby="tb-view">
+                  <svg viewBox="0 0 24 24"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6z" /><circle cx="12" cy="12" r="2.5" /></svg>
+                </button>
+                <span class="tooltip-content" id="tb-view" role="tooltip">View Details</span>
+              </span>
+              <span class="tooltip-wrap">
+                <button class="ui-btn ui-btn-outline ui-btn-icon" type="button" aria-label="Download as CSV" aria-describedby="tb-csv">
+                  <svg viewBox="0 0 24 24"><path d="M12 3v12" /><path d="m7 10 5 5 5-5" /><path d="M5 21h14" /></svg>
+                </button>
+                <span class="tooltip-content" id="tb-csv" role="tooltip">Download as CSV</span>
+              </span>
+              <span class="tooltip-wrap">
+                <button class="ui-btn ui-btn-outline ui-btn-icon" type="button" aria-label="More actions" aria-describedby="tb-more">
+                  <svg viewBox="0 0 24 24"><path d="M5 12h.01" /><path d="M12 12h.01" /><path d="M19 12h.01" /></svg>
+                </button>
+                <span class="tooltip-content" id="tb-more" role="tooltip">More actions</span>
+              </span>
+              <span class="tooltip-wrap">
+                <button class="ui-btn ui-btn-outline ui-btn-icon" type="button" aria-label="Back" aria-describedby="tb-back">
+                  <svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6" /></svg>
+                </button>
+                <span class="tooltip-content" id="tb-back" role="tooltip">Back</span>
+              </span>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head"><h2>Primary action, text only</h2></div>
+          <p class="when"><strong>Use:</strong> High-priority actions whose meaning is specific to context and has no suitable universal icon.<br /><strong>Appearance:</strong> Same brand-blue pill as the icon variant, label only.<br /><strong>Rationale:</strong> Maintains primary emphasis without forcing decorative or ambiguous icons.</p>
+          <div class="btn-grid">
+            <button class="btn btn-primary" type="button">Leave Passbook</button>
+            <button class="btn btn-primary" type="button">Floating Holiday</button>
+            <button class="btn btn-primary" type="button">Appreciate Colleague</button>
+            <button class="btn btn-primary" type="button">Nominate Colleague</button>
+            <button class="btn btn-primary" type="button">Nudge Employee</button>
+            <button class="btn btn-primary" type="button">Nudge Manager</button>
+            <button class="btn btn-primary" type="button">Apply Filters</button>
+            <button class="btn btn-primary" type="button">View All Candidates</button>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head"><h2>Secondary action</h2></div>
+          <p class="when"><strong>Use:</strong> Cancel, back, clear filters, and non-destructive alternatives that support the primary path.<br /><strong>Appearance:</strong> Light outlined pill; no icon required.<br /><strong>Rationale:</strong> Reduces visual competition so the primary action remains the clear focal point.</p>
+          <div class="btn-grid">
+            <button class="btn btn-ghost" type="button">Delete</button>
+            <button class="btn btn-ghost" type="button">Cancel</button>
+            <button class="btn btn-ghost" type="button">Back to Requests</button>
+            <button class="btn btn-ghost" type="button">Clear</button>
+            <button class="btn btn-ghost" type="button">More Filters</button>
+            <button class="btn btn-ghost" type="button">Hide Filters</button>
+            <button class="btn btn-ghost" type="button">View Details</button>
+          </div>
+          <p class="edge-foot">Reversible removal uses a secondary Delete. Permanent removal uses destructive styling only inside a confirmation dialog.</p>
+        </article>
+      </section>
+
+      <p class="section-title nav-target" id="extended">Supporting interaction patterns</p>
+      <section class="layout">
+        <article class="panel">
+          <div class="panel-head"><h2>View selector</h2></div>
+          <p class="when"><strong>Use:</strong> Switch among related views, filters, or roles where exactly one option is active.<br /><strong>Appearance:</strong> Segmented control with orange active segment, or a labeled toggle between Employee and Approver contexts.<br /><strong>Rationale:</strong> Communicates mode change instantly without the weight of full navigation tabs.</p>
+
+          <p class="when" style="margin-top: 0"><strong>Time range filter</strong></p>
+          <div class="segmented-group" role="group" aria-label="Analytics time range">
+            <button class="segmented-btn active" type="button" aria-pressed="true" title="All Time to Date">ATD</button>
+            <button class="segmented-btn" type="button" aria-pressed="false" title="Year to Date">YTD</button>
+            <button class="segmented-btn" type="button" aria-pressed="false" title="Month to Date">MTD</button>
+            <button class="segmented-btn" type="button" aria-pressed="false" title="Custom Date Range">CTD</button>
+          </div>
+
+          <p class="when mt-8"><strong>Employee and approver context</strong></p>
+          <div class="role-toggle">
+            <span class="role-label role-label-employee active">Employee</span>
+            <button
+              class="role-switch"
+              type="button"
+              role="switch"
+              aria-checked="false"
+              aria-label="Toggle between Employee and Approver view"
+            >
+              <span class="role-switch-thumb" aria-hidden="true"></span>
+            </button>
+            <span class="role-label role-label-approver">Approver</span>
+          </div>
+
+          <div class="role-toggle mt-8">
+            <span class="role-label role-label-employee">Employee</span>
+            <button
+              class="role-switch is-approver"
+              type="button"
+              role="switch"
+              aria-checked="true"
+              aria-label="Toggle between Employee and Approver view"
+            >
+              <span class="role-switch-thumb" aria-hidden="true"></span>
+            </button>
+            <span class="role-label role-label-approver active">Approver</span>
+          </div>
+
+          <p class="when mt-8"><strong>In-module view mode</strong></p>
+          <div class="segmented-group" role="group" aria-label="Leave views">
+            <button class="segmented-btn active" type="button" aria-pressed="true">Overview</button>
+            <button class="segmented-btn" type="button" aria-pressed="false">Calendar</button>
+            <button class="segmented-btn" type="button" aria-pressed="false">Team Requests</button>
+          </div>
+          <p class="edge-foot">Employee context: blue track and label. Approver context: orange track and label.</p>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head"><h2>Primary action with menu</h2></div>
+          <p class="when"><strong>Use:</strong> A single default outcome with additional related options (save, submit, close).<br /><strong>Appearance:</strong> Primary pill with integrated menu affordance on the trailing edge.<br /><strong>Rationale:</strong> Keeps the common path one click away while exposing variants without cluttering the header.</p>
+          <div class="stack">
+            <div class="split" aria-label="Save options">
+              <button class="split-main" type="button"><svg viewBox="0 0 24 24"><path d="M4 4h14l2 2v14H4z" /></svg>Save</button>
+              <button class="split-menu" type="button" aria-label="More save options"><svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" /></svg></button>
+            </div>
+          </div>
+          <p class="edge-foot">Menu lists alternate outcomes: Save as draft, Save and submit, Save and close.</p>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head"><h2>Bulk selection bar</h2></div>
+          <p class="when"><strong>Use:</strong> One or more rows selected in a list or table.<br /><strong>Appearance:</strong> Persistent bar with selection count and grouped approve/reject actions.<br /><strong>Rationale:</strong> Makes multi-record operations explicit and eliminates repeated row-level clicks.</p>
+          <div class="bulk-bar">
+            <span class="bulk-meta">3 of 12 selected</span>
+            <div class="stack">
+              <button class="btn btn-primary" type="button"><svg viewBox="0 0 24 24"><path d="m20 6-11 11-5-5" /></svg>Bulk Approve</button>
+              <button class="btn btn-ghost" type="button"><svg viewBox="0 0 24 24"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg>Bulk Reject</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="panel">
+          <div class="panel-head"><h2>Inline text action</h2></div>
+          <p class="when"><strong>Use:</strong> Supplementary actions embedded in body copy (policy links, see all, learn more).<br /><strong>Appearance:</strong> Text styled as a link; underline on hover and focus.<br /><strong>Rationale:</strong> Supports the narrative without competing with primary page actions.</p>
+          <p class="inline-copy">
+            Need help with leave policy?
+            <button class="link-btn" type="button">View policy</button>
+            or
+            <button class="link-btn" type="button">Learn more</button>.
+          </p>
+          <p class="inline-copy mt-8">
+            <button class="link-btn" type="button">Forgot password?</button>
+            ·
+            <button class="link-btn" type="button">See all</button>
+            ·
+            <button class="link-btn" type="button">View details</button>
+          </p>
+        </article>
+      </section>
+
+      <p class="section-title nav-target" id="navigation">Navigation patterns</p>
+      <section class="layout">
+        <article class="panel panel-wide">
+          <div class="panel-head"><h2>Module navigation tabs</h2></div>
+          <p class="when">
+            <strong>Use:</strong> Top-level sections within a module (overview, staffing, timesheets).<br />
+            <strong>Appearance:</strong> Underline style with orange active indicator, or filled orange segment on a white track; optional count pill for workload.<br />
+            <strong>Rationale:</strong> Separates major areas without competing with brand-blue action buttons.
+          </p>
+          <div class="tabs-stack">
+            <p class="when" style="margin-top: 0"><strong>Underline style</strong></p>
+            <div class="tabs-list" role="tablist" aria-label="Profile sections">
+              <button class="tabs-trigger active" type="button" role="tab" aria-selected="true">Skills</button>
+              <button class="tabs-trigger" type="button" role="tab" aria-selected="false">Certifications</button>
+              <button class="tabs-trigger" type="button" role="tab" aria-selected="false">Languages</button>
+            </div>
+
+            <p class="when"><strong>Filled segment style</strong></p>
+            <div class="tabs-orange-list" role="tablist" aria-label="Delivery modules">
+              <button class="tabs-orange-trigger active" type="button" role="tab" aria-selected="true">Projects</button>
+              <button class="tabs-orange-trigger" type="button" role="tab" aria-selected="false">Staffing</button>
+              <button class="tabs-orange-trigger" type="button" role="tab" aria-selected="false">Timesheets</button>
+            </div>
+            <div class="tabs-orange-list" role="tablist" aria-label="Rewards modules">
+              <button class="tabs-orange-trigger" type="button" role="tab" aria-selected="false">Recognition Feed</button>
+              <button class="tabs-orange-trigger active" type="button" role="tab" aria-selected="true">My Recognitions</button>
+              <button class="tabs-orange-trigger" type="button" role="tab" aria-selected="false">My Nominations</button>
+            </div>
+
+            <p class="when"><strong>Filled segment with counts</strong></p>
+            <div class="tabs-orange-list" role="tablist" aria-label="Leave approval status">
+              <button class="tabs-orange-trigger active" type="button" role="tab" aria-selected="true">
+                All <span class="tab-count-orange active">7</span>
+              </button>
+              <button class="tabs-orange-trigger" type="button" role="tab" aria-selected="false">
+                Auto Approved <span class="tab-count-orange inactive">0</span>
+              </button>
+              <button class="tabs-orange-trigger" type="button" role="tab" aria-selected="false">
+                HR Approved <span class="tab-count-orange inactive">0</span>
+              </button>
+              <button class="tabs-orange-trigger" type="button" role="tab" aria-selected="false">
+                Manager Approved <span class="tab-count-orange inactive">0</span>
+              </button>
+            </div>
+          </div>
+          <p class="edge-foot">Select underline or filled style per module; do not combine both on the same level.</p>
+        </article>
+
+        <article class="panel panel-wide">
+          <div class="panel-head"><h2>Section filter tabs</h2></div>
+          <p class="when">
+            <strong>Use:</strong> Filters within a module—manager queues, staffing status, record sections.<br />
+            <strong>Appearance:</strong> Inactive tabs on muted ground; active tab on white with orange label, subtle shadow, and a fine bottom indicator; optional count on the right.<br />
+            <strong>Rationale:</strong> Surfaces workload at a glance and anchors list content to the selected filter.
+          </p>
+          <div class="subtabs-wrap">
+            <div class="subtabs-row" role="tablist" aria-label="Manager view filters">
+              <button class="subtab active" type="button" role="tab" aria-selected="true">
+                <span>Direct reports</span>
+                <span class="tab-count active">7</span>
+              </button>
+              <button class="subtab" type="button" role="tab" aria-selected="false">
+                <span>Indirect reports</span>
+                <span class="tab-count inactive">0</span>
+              </button>
+              <button class="subtab" type="button" role="tab" aria-selected="false">
+                <span>Assigned to me</span>
+                <span class="tab-count inactive">735</span>
+              </button>
+            </div>
+          </div>
+          <div class="tabs-demo-shell">List and detail content align flush beneath the active tab, with square top corners on the content panel.</div>
+
+          <div class="subtabs-wrap mt-8">
+            <div class="subtabs-row" role="tablist" aria-label="Delivery staffing status">
+              <button class="subtab active" type="button" role="tab" aria-selected="true">
+                <span>All</span>
+                <span class="tab-count active">24</span>
+              </button>
+              <button class="subtab" type="button" role="tab" aria-selected="false">
+                <span>Active</span>
+                <span class="tab-count inactive">18</span>
+              </button>
+              <button class="subtab" type="button" role="tab" aria-selected="false">
+                <span>Draft</span>
+                <span class="tab-count inactive">6</span>
+              </button>
+            </div>
+          </div>
+          <div class="tabs-demo-shell">Status filters for staffing and operational lists.</div>
+
+          <div class="subtabs-wrap mt-8">
+            <div class="subtabs-row" role="tablist" aria-label="Job detail sections">
+              <button class="subtab active" type="button" role="tab" aria-selected="true"><span>Basic Details</span></button>
+              <button class="subtab" type="button" role="tab" aria-selected="false"><span>Skills &amp; Experience</span></button>
+              <button class="subtab" type="button" role="tab" aria-selected="false"><span>Position Details</span></button>
+              <button class="subtab" type="button" role="tab" aria-selected="false"><span>Change History</span></button>
+            </div>
+          </div>
+          <p class="edge-foot">Omit count badges when the value is zero.</p>
+        </article>
+      </section>
+
+      <section class="rules nav-target" id="principles">
+        <h2>Interaction principles</h2>
+        <div class="rule-grid">
+          <article class="rule">
+            <strong>Action placement</strong>
+            <p>Place secondary actions (Cancel, Reject) on the left and primary actions (Save, Approve) on the right in headers and footers. In confirmation dialogs, place Cancel first, then the destructive action.</p>
+          </article>
+          <article class="rule">
+            <strong>Access control</strong>
+            <p>Hide controls the user cannot use. When access is blocked but visible, disable the control and explain why in a tooltip. Never disable without a stated reason.</p>
+          </article>
+          <article class="rule">
+            <strong>Completion feedback</strong>
+            <p>Confirm success with a toast and preserve page context. You may briefly change the label to reflect completion, then restore the default. Clear loading indicators promptly.</p>
+          </article>
+          <article class="rule">
+            <strong>Failure and retry</strong>
+            <p>On failure, show an error message and re-enable the control. Offer Try again as a secondary action when automatic retry is not in effect.</p>
+          </article>
+          <article class="rule">
+            <strong>Loading</strong>
+            <p>Show a spinner with an active verb (Saving, Approving, Deleting). Disable all actions in the same group while work is in progress. Use one loading indicator per action group.</p>
+          </article>
+          <article class="rule">
+            <strong>Icon placement</strong>
+            <p>Place icons before the label for standard actions. Reserve trailing icons for external links and outbound navigation.</p>
+          </article>
+          <article class="rule">
+            <strong>Deletion hierarchy</strong>
+            <p>Style reversible removal as a secondary action. Reserve destructive fill for permanent deletion inside a dedicated confirmation step. Toolbar delete icons remain neutral, never destructive red.</p>
+          </article>
+          <article class="rule">
+            <strong>Confirmation depth</strong>
+            <p>Confirm low-risk row removal inline. Require a modal for entity-level or irreversible deletion.</p>
+          </article>
+          <article class="rule">
+            <strong>Responsive layout</strong>
+            <p>Stack primary actions full width on narrow viewports in forms and dialogs. Keep toolbar controls compact; allow bulk action bars to wrap.</p>
+            <div class="mobile-row demo-mt">
+              <button class="btn btn-ghost" type="button">Cancel</button>
+              <button class="btn btn-primary" type="button">Apply Filters</button>
+            </div>
+          </article>
+          <article class="rule">
+            <strong>Navigation vs selection</strong>
+            <p>Reserve orange tabs for module and section navigation. Use segmented controls and role toggles for filters, time ranges, and view modes. Apply one pattern per hierarchy level.</p>
+          </article>
+          <article class="rule">
+            <strong>Selection state</strong>
+            <p>Allow only one active item per tab or segment group. Mark the active item with consistent color, weight, and—where applicable—a count badge.</p>
+          </article>
+          <article class="rule">
+            <strong>Keyboard and focus</strong>
+            <p>Expose a visible focus ring on every interactive control. Display tooltips when icon actions receive keyboard focus. Provide an accessible name for every icon-only action.</p>
+            <span class="tooltip-wrap demo-mt" style="display: inline-flex">
+              <button class="ui-btn ui-btn-default" type="button" aria-describedby="tt-focus">Focus example</button>
+              <span class="tooltip-content" id="tt-focus" role="tooltip">Tooltip appears on keyboard focus</span>
+            </span>
+          </article>
+          <article class="rule">
+            <strong>Localization</strong>
+            <p>Mirror directional icons in right-to-left layouts. Keep count badges after the label in all locales.</p>
+          </article>
+          <article class="rule">
+            <strong>Workload indicators</strong>
+            <p>Apply count badges only to signal pending work. Omit the badge when the count is zero.</p>
+            <button class="btn btn-primary btn-badge demo-mt" type="button">
+              Team Requests <span class="badge">4</span>
+            </button>
+          </article>
+        </div>
+      </section>
+
+      <section class="rules rules-spaced nav-target" id="states">
+        <h2>Interaction states</h2>
+        <p class="when" style="margin-top: 0">Standard feedback for in-progress, blocked, successful, and destructive actions.</p>
+        <div class="btn-grid">
+          <button class="btn btn-primary" type="button"><svg class="spin" viewBox="0 0 24 24"><path d="M12 3a9 9 0 1 1-9 9" /></svg>Approving...</button>
+          <button class="btn btn-primary btn-disabled" type="button" disabled>Approve</button>
+          <button class="btn btn-ghost btn-disabled" type="button" disabled title="You don't have permission">Approve</button>
+          <button class="btn btn-success" type="button"><svg viewBox="0 0 24 24"><path d="m20 6-11 11-5-5" /></svg>Approved</button>
+          <button class="btn btn-ghost" type="button">Try again</button>
+          <button class="btn btn-ghost" type="button">Cancel</button>
+          <button class="btn btn-danger" type="button">Delete</button>
+          <button class="btn btn-danger" type="button">Deleting…</button>
+        </div>
+      </section>
+      </main>
+    </div>
+    <script>
+      (function initSectionNav() {
+        const navLinks = document.querySelectorAll(".demo-nav-link");
+        const sections = document.querySelectorAll(".nav-target");
+
+        navLinks.forEach((link) => {
+          link.addEventListener("click", (e) => {
+            const id = link.getAttribute("href");
+            const target = id ? document.querySelector(id) : null;
+            if (!target) return;
+            e.preventDefault();
+            target.scrollIntoView({ behavior: "smooth", block: "start" });
+            history.replaceState(null, "", id);
+          });
+        });
+
+        const observer = new IntersectionObserver(
+          (entries) => {
+            const visible = entries
+              .filter((entry) => entry.isIntersecting)
+              .sort((a, b) => a.target.offsetTop - b.target.offsetTop);
+            const currentId = visible[0]?.target?.id;
+            if (!currentId) return;
+            navLinks.forEach((link) => {
+              link.classList.toggle("is-active", link.getAttribute("href") === `#${currentId}`);
+            });
+          },
+          { rootMargin: "-64px 0px -55% 0px", threshold: 0 }
+        );
+
+        sections.forEach((section) => observer.observe(section));
+        if (sections[0]) navLinks[0]?.classList.add("is-active");
+      })();
+
+      function setActive(item, group, itemSelector) {
+        group.querySelectorAll(itemSelector).forEach((el) => {
+          el.classList.remove("active");
+          el.setAttribute("aria-selected", "false");
+          el.setAttribute("aria-pressed", "false");
+        });
+        item.classList.add("active");
+        item.setAttribute("aria-selected", "true");
+        item.setAttribute("aria-pressed", "true");
+      }
+
+      function syncOrangeBadges(group, activeBtn) {
+        group.querySelectorAll(".tab-count-orange").forEach((badge) => {
+          badge.classList.remove("active");
+          badge.classList.add("inactive");
+        });
+        activeBtn.querySelectorAll(".tab-count-orange").forEach((badge) => {
+          badge.classList.remove("inactive");
+          badge.classList.add("active");
+        });
+      }
+
+      function syncSubtabBadges(group, activeBtn) {
+        group.querySelectorAll(".tab-count").forEach((badge) => {
+          badge.classList.remove("active");
+          badge.classList.add("inactive");
+        });
+        activeBtn.querySelectorAll(".tab-count").forEach((badge) => {
+          badge.classList.remove("inactive");
+          badge.classList.add("active");
+        });
+      }
+
+      document.querySelectorAll(".segmented-group").forEach((group) => {
+        group.addEventListener("click", (e) => {
+          const btn = e.target.closest(".segmented-btn");
+          if (!btn || !group.contains(btn)) return;
+          setActive(btn, group, ".segmented-btn");
+        });
+      });
+
+      document.querySelectorAll(".role-toggle").forEach((wrap) => {
+        const switchBtn = wrap.querySelector(".role-switch");
+        const empLabel = wrap.querySelector(".role-label-employee");
+        const apprLabel = wrap.querySelector(".role-label-approver");
+        if (!switchBtn || !empLabel || !apprLabel) return;
+
+        switchBtn.addEventListener("click", () => {
+          const isApprover = switchBtn.classList.contains("is-approver");
+          const next = !isApprover;
+          switchBtn.classList.toggle("is-approver", next);
+          switchBtn.setAttribute("aria-checked", String(next));
+          empLabel.classList.toggle("active", !next);
+          apprLabel.classList.toggle("active", next);
+        });
+      });
+
+      document.querySelectorAll(".tabs-list, .tabs-orange-list").forEach((group) => {
+        group.addEventListener("click", (e) => {
+          const btn = e.target.closest(".tabs-trigger, .tabs-orange-trigger");
+          if (!btn || !group.contains(btn)) return;
+          setActive(btn, group, ".tabs-trigger, .tabs-orange-trigger");
+          if (btn.classList.contains("tabs-orange-trigger")) syncOrangeBadges(group, btn);
+        });
+      });
+
+      document.querySelectorAll(".subtabs-row").forEach((group) => {
+        group.addEventListener("click", (e) => {
+          const btn = e.target.closest(".subtab");
+          if (!btn || !group.contains(btn)) return;
+          setActive(btn, group, ".subtab");
+          syncSubtabBadges(group, btn);
+        });
+      });
+
+    </script>
+  </body>
+</html>
